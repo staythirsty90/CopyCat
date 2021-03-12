@@ -1,0 +1,9 @@
+{
+	"files.exclude": {
+		".cs.meta": true,
+		".meta": true
+	},
+	"search.exclude": {
+		".meta": true
+	}
+}

@@ -1,0 +1,65 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - Kill
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - 
+  - 
+  - Player
+  - Kill
+  - Layer1
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: Shadows
+    uniqueID: 1029544767
+    locked: 0
+  - name: ForegroundElements
+    uniqueID: 2080352653
+    locked: 0
+  - name: Pipes
+    uniqueID: 1539451955
+    locked: 0
+  - name: Bird
+    uniqueID: 1469203775
+    locked: 0
+  - name: Floor
+    uniqueID: 1862084909
+    locked: 0
+  - name: BlackEdges
+    uniqueID: 3946285813
+    locked: 0
+  - name: UI
+    uniqueID: 1771627741
+    locked: 0

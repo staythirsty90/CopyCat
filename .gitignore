@@ -1,0 +1,6 @@
+Library/
+builds/
+Temp/
+obj/
+.vs/
+*.apk
