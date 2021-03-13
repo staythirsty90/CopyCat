@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 [RequireComponent(typeof(IJump))]
-public class PlayAnimationOnFalling : MonoBehaviour, IOnGameRestart, IOnJump, IOnFall, IOnGameOver {
+public class PlayAnimationOnFalling : MonoBehaviour, IOnGameRestart, IOnPlayerJump, IOnFall, IOnGameOver {
     private Animator thisAnimator;
     private readonly int deadHash = Animator.StringToHash("Dead");
 
@@ -9,7 +9,7 @@ public class PlayAnimationOnFalling : MonoBehaviour, IOnGameRestart, IOnJump, IO
         thisAnimator = GetComponent<Animator>();
     }
 
-    public void OnJump() {
+    public void OnPlayerJump() {
         thisAnimator.SetBool(deadHash, false);
         thisAnimator.speed = 3f;
     }

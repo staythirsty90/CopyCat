@@ -9,7 +9,7 @@ public class UIMonoBehaviour : MonoBehaviour {
     protected AudioClip audioClip;
     [SerializeField]
     protected float fadeTime;
-    [SerializeField]
+    [SerializeField] 
     protected float delay;
 
     protected MaskableGraphic thisImage;
@@ -24,7 +24,7 @@ public class UIMonoBehaviour : MonoBehaviour {
             yield return null;
             t += Time.deltaTime;
         }
-        StartCoroutine(CrossFade(thisImage, thisImage.color.a, 0f, fadeTime));
+        StartCoroutine(CrossFade(thisImage, thisImage.color.a, 0f));
     }
 
     public IEnumerator FadeIn() {
@@ -33,10 +33,10 @@ public class UIMonoBehaviour : MonoBehaviour {
             yield return null;
             t += Time.deltaTime;
         }
-        StartCoroutine(CrossFade(thisImage, thisImage.color.a, 1f, fadeTime));
+        StartCoroutine(CrossFade(thisImage, thisImage.color.a, 1f));
     }
 
-    public IEnumerator CrossFade(MaskableGraphic image, float startAlpha, float endAplha, float time, AudioClip audioClip, float delay) {
+    public IEnumerator CrossFade(MaskableGraphic image, float startAlpha, float endAplha, AudioClip audioClip, float delay) {
         float t = 0;
 
         while (t <= delay) {
@@ -48,25 +48,25 @@ public class UIMonoBehaviour : MonoBehaviour {
             PlayAudio?.Invoke(audioClip);
         }
 
-        yield return StartCoroutine(Fade(image, startAlpha, endAplha, time, false));
+        yield return StartCoroutine(Fade(image, startAlpha, endAplha, false));
     }
 
-    public IEnumerator CrossFade(MaskableGraphic image, float startAlpha, float endAlpha, float duration) {
+    public IEnumerator CrossFade(MaskableGraphic image, float startAlpha, float endAlpha) {
         if (audioClip) {
             PlayAudio?.Invoke(audioClip);
         }
-        yield return StartCoroutine(Fade(image, startAlpha, endAlpha, duration, false));
+        yield return StartCoroutine(Fade(image, startAlpha, endAlpha, false));
     }
 
-    public IEnumerator CrossFadeInAndOut(MaskableGraphic image, float startAlpha, float endAplha, float time) {
-        yield return StartCoroutine(Fade(image, startAlpha, endAplha, time, true));
+    public IEnumerator CrossFadeInAndOut(MaskableGraphic image, float startAlpha, float endAplha) {
+        yield return StartCoroutine(Fade(image, startAlpha, endAplha, true));
     }
 
-    protected IEnumerator Fade(MaskableGraphic image, float startAlpha, float endAplha, float duration, bool fadeOutAfter) {
+    protected IEnumerator Fade(MaskableGraphic image, float startAlpha, float endAplha, bool fadeOutAfter) {
         if (!image.enabled) {
             image.enabled = true;
         }
-        float lerpDuration = duration;
+        float lerpDuration = fadeTime;
         float currentLerpDuration = 0f;
         float t = currentLerpDuration / lerpDuration;
 

@@ -13,7 +13,6 @@ public class KillOnCollide : MonoBehaviour, IOnUpdate, IOnGameRestarted {
         thisTransform = transform;
         copyCat = FindObjectOfType<CopyCat>();
     }
-
     public void OnGameRestarted() {
         thisRigidbody.angularVelocity = 0;
         thisRigidbody.velocity = Vector2.zero;
@@ -21,9 +20,8 @@ public class KillOnCollide : MonoBehaviour, IOnUpdate, IOnGameRestarted {
         thisRigidbody.isKinematic = false;
         didDie = false;
     }
-
     void OnTriggerEnter2D(Collider2D other) {
-        if (didDie) {
+        if (didDie) { 
             return;
         }
         UnityEngine.Profiling.Profiler.BeginSample("KILL");
@@ -34,12 +32,10 @@ public class KillOnCollide : MonoBehaviour, IOnUpdate, IOnGameRestarted {
         }
         UnityEngine.Profiling.Profiler.EndSample();
     }
-
     void Kill() {
-        copyCat.EndGame();
+        copyCat.eventManager.NotifyListeners_OnPlayerKilled();
         CopyCat.Updater.AddToUpdate(this);
     }
-
     public void OnUpdate() {
         if (TimeSinceUpdating >= 0.25f) {
             PlayAudioOnGameOver.PlayFallSound();

@@ -8,7 +8,7 @@ public class AddScoreOnTrigger : MonoBehaviour {
     
     void OnTriggerEnter2D() {
         if (!copyCat.IsGameOver) {
-            copyCat.NotifyListeners(typeof(IOnScorePoint), -1);
+            copyCat.eventManager.NotifyListeners_OnScorePoint(-1);
         }
     }
 }

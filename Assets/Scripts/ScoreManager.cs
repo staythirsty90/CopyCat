@@ -2,33 +2,28 @@
 using UnityEngine;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(Text))]
 public class ScoreManager : MonoBehaviour, IOnScorePoint, IOnGameOver, IOnGameRestart {
     [SerializeField]
-    private GameDigits gameDigits = null;
-    [SerializeField]
     private int scoreAmount = 1;
+    private Text scoreText;
     [SerializeField]
-    private Image newImage = null;
+    private Text endScoreText = null;
     [SerializeField]
-    private Image onesPlace = null;
-    [SerializeField]
-    private Image tensPlace = null;
-    [SerializeField]
-    private Image hundredsPlace = null;
-    
+    private Text endHighScoreText = null;
+
     public int Score { get; set; }
     public int HighScore { get; set; }
-
+    public bool NewHighScore { get; private set; } = false;
     private RectTransform thisRectTransform;
     private CopyCat copyCat;
     private Vector2 startingPosition;
-    private float moveOffset = 22f;
 
     void Awake() {
         copyCat = FindObjectOfType<CopyCat>();
         thisRectTransform = GetComponent<RectTransform>();
+        scoreText = GetComponent<Text>();
         startingPosition = thisRectTransform.anchoredPosition;
-        moveOffset = onesPlace.rectTransform.sizeDelta.x;
     }
 
     public void OnScorePoint(int score) {
@@ -38,59 +33,26 @@ public class ScoreManager : MonoBehaviour, IOnScorePoint, IOnGameOver, IOnGameRe
         Score += scoreAmount;
         if (Score > HighScore) {
             HighScore = Score;
+            NewHighScore = true;
         }
-        SetDigits();
-        MoveScorePosition();
-    }
-
-    void SetDigits() {
-        (int ones, int tens, int hunds) = GetDigitPlaces();
-        if (hunds > 0) {
-            ShowDigit(hundredsPlace,hunds);
-        }
-        if (tens > 0 || hunds > 0) {
-            ShowDigit(tensPlace, tens);
-        }
-        ShowDigit(onesPlace, ones);
-    }
-
-    private void ShowDigit(Image img, int place) {
-        img.enabled = true;
-        img.sprite = gameDigits.GameDigit[place];
-        img.color = new Color(1f, 1f, 1f, 1f);
-    }
-
-    (int, int, int) GetDigitPlaces() {
-        int score = Score;
-        int onesPlace = score % 10;
-        score /= 10;
-        int tensPlace = score % 10;
-        score /= 10;
-        int hundredsPlace = score % 10;
-        return (onesPlace, tensPlace, hundredsPlace);
-    }
-
-    void MoveScorePosition() {
-        Vector2 pos = startingPosition;
-        if (hundredsPlace.enabled) {
-            pos.x += moveOffset;
-        }
-        if (tensPlace.enabled) {
-            pos.x += moveOffset;
-        }
-        thisRectTransform.anchoredPosition = pos;
+        scoreText.text = Score.ToString();
     }
 
     public void OnGameRestart() {
         Score = 0;
-        copyCat.NotifyListeners(typeof(IOnScorePoint), Score);
+        copyCat.eventManager.NotifyListeners_OnScorePoint(Score);
         thisRectTransform.anchoredPosition = startingPosition;
+        scoreText.text = Score.ToString();
+        NewHighScore = false;
     }
 
     public void OnGameOver() {
         if (Score >= HighScore) {
             Save();
         }
+        endScoreText.text = scoreText.text;
+        endHighScoreText.text = HighScore.ToString();
+        
     }
 
     void Save() {

@@ -6,9 +6,9 @@ public class PlayAudioOnGameOver : MonoBehaviour, IOnGameOver, IOnUpdate {
     private AudioClip gameOverClip = null;
     [SerializeField]
     private AudioClip hitClip = null;
-    public float delay = 0f;
+    public float delay = 0f; 
     private static AudioSource thisAudioSource;
-    private static AudioClip gameOverClipStatic;
+    private static AudioClip gameOverClipStatic; 
     float t = 0;
 
     public float TimeSinceUpdating { get; set; }
@@ -18,7 +18,7 @@ public class PlayAudioOnGameOver : MonoBehaviour, IOnGameOver, IOnUpdate {
         thisAudioSource = GetComponent<AudioSource>();
         gameOverClipStatic = gameOverClip;
     }
-    public void OnGameOver() {
+    public void OnGameOver() {   
         CopyCat.Updater.AddToUpdate(this);
     }
 

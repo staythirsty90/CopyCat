@@ -16,21 +16,12 @@ public class MoveSparkles : MonoBehaviour, IOnGameRestart {
         thisAnimator.enabled = false;
         thisImage.enabled = false;
     }
-
-    void OnEnable() {
-        MedalReward.OnMedalRewarded += MedalReward_OnMedalRewarded;
-    }
-
-    void OnDisable() {
-        MedalReward.OnMedalRewarded -= MedalReward_OnMedalRewarded;
-    }
-
     public void OnGameRestart() {
         thisAnimator.enabled = false;
         thisImage.enabled = false;
     }
 
-    private void MedalReward_OnMedalRewarded(AudioClip medalSound) {
+    public void Init() {
         //Debug.Log("Wtf");
         thisAnimator.enabled = true;
         thisImage.enabled = true;

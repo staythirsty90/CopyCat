@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 
-
 public class ChangeWorldColors : MonoBehaviour, IOnGameRestart {
     public int numberOfWorldColors;
     [Range(0, 100)]
@@ -24,6 +23,6 @@ public class ChangeWorldColors : MonoBehaviour, IOnGameRestart {
     }
 
     private void ChangeWorldColor(int colorIndex) {
-        copyCat.NotifyListeners(typeof(IOnWorldChanged), colorIndex);
+        copyCat.eventManager.NotifyListeners_OnWorldChanged(colorIndex);
     }
 }

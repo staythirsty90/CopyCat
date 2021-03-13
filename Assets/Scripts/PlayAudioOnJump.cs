@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class PlayAudioOnJump : MonoBehaviour, IOnJump {
+public class PlayAudioOnJump : MonoBehaviour, IOnPlayerJump {
     [SerializeField]
     private AudioClip jumpClip = null;
     private AudioSource thisAudioSource;
@@ -8,7 +8,7 @@ public class PlayAudioOnJump : MonoBehaviour, IOnJump {
     void Awake() {
         thisAudioSource = GetComponent<AudioSource>();
     }
-    public void OnJump() {
+    public void OnPlayerJump() {
         thisAudioSource.PlayOneShot(jumpClip);
     }
 }

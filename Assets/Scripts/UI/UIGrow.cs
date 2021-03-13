@@ -7,10 +7,12 @@ public abstract class UIGrow : UIMonoBehaviour, IOnGameRestart, IOnUpdate {
     protected float lerpPercent;
     protected float delayTimer = 0f;
     [SerializeField]
+    protected bool resetToStartScale = false; 
+    [SerializeField]
     protected Vector3 startScale, endScale;
 
-    public float TimeSinceUpdating { get ; set ; }
-    public bool RemoveThisFromUpdater { get ; set ; }
+    public float TimeSinceUpdating { get; set; }
+    public bool RemoveThisFromUpdater { get; set; }
 
     protected override void Awake() {
         thisRectTransform = GetComponent<RectTransform>();
@@ -40,7 +42,11 @@ public abstract class UIGrow : UIMonoBehaviour, IOnGameRestart, IOnUpdate {
     protected virtual void OnGrowDone() {
         currentLerpTime = 0f;
         RemoveThisFromUpdater = true;
-        thisRectTransform.localScale = endScale;
+        Vector3 scale = endScale;
+        if (resetToStartScale) {
+            scale = startScale;
+        }
+        thisRectTransform.localScale = scale;
     }
 
     void IOnUpdate.OnUpdate() {

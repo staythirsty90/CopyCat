@@ -47,24 +47,11 @@ public class RestartGameButton : UIMonoBehaviour, IOnGameOver, IOnGameRestart {
             yield return null;
         }
         thisImage.rectTransform.anchoredPosition = endPosition;
-        StartCoroutine(FadeIn(thisImage, false));
+        StartCoroutine(This_FadeIn(thisImage, false));
     }
 
-    IEnumerator FadeIn(MaskableGraphic thisImage, bool restartAfter) {
-        yield return StartCoroutine(CrossFade(thisImage, thisImage.color.a, 1f, fadeInTime));
-        if (restartAfter) {
-            float t = 0;
-            while (t < restartGameDelay) {
-                yield return null;
-                t += Time.deltaTime;
-            }
-            restart();
-            yield return StartCoroutine(FadeOut(thisImage));
-            copyCat.BeginGamePlay();
-        }
-        else {
-            thisButton.interactable = true;
-        }
+    void restart() {
+        copyCat.RestartGame();
     }
 
     public void Restart() {
@@ -78,27 +65,41 @@ public class RestartGameButton : UIMonoBehaviour, IOnGameOver, IOnGameRestart {
     IEnumerator RestartGame() {
         float t = 0;
         blackFadeImage.rectTransform.anchoredPosition = Vector3.zero;
-        yield return StartCoroutine(FadeOut(thisImage));
+        yield return StartCoroutine(This_FadeOut(thisImage));
         thisImage.rectTransform.anchoredPosition = originalPosition;
-        yield return StartCoroutine(FadeIn(blackFadeImage, restartAfter: true));
+        yield return StartCoroutine(This_FadeIn(blackFadeImage, restartAfter: true));
         while (t < restartGameDelay) {
             yield return null;
             t += Time.deltaTime;
         }
-        StartCoroutine(FadeOut(blackFadeImage));
+        StartCoroutine(This_FadeOut(blackFadeImage));
         didClickRestart = false;
     }
+    IEnumerator This_FadeIn(MaskableGraphic thisImage, bool restartAfter) {
+        yield return StartCoroutine(CrossFade(thisImage, thisImage.color.a, delay));
+        if (restartAfter) {
+            float t = 0;
+            while (t < restartGameDelay) {
+                yield return null;
+                t += Time.deltaTime;
+            }
+            restart();
+            yield return StartCoroutine(This_FadeOut(thisImage));
+            copyCat.BeginGamePlay();
+        }
+        else {
+            thisButton.interactable = true;
+        }
+    }
 
-    IEnumerator FadeOut(MaskableGraphic thisImage) {
+    IEnumerator This_FadeOut(MaskableGraphic thisImage) {
         float t = 0;
         while (t < restartGameDelay) {
             yield return null;
             t += Time.deltaTime;
         }
-        yield return StartCoroutine(CrossFade(thisImage, thisImage.color.a, 0f, fadeInTime));
+        yield return StartCoroutine(CrossFade(thisImage, thisImage.color.a, 0f));
     }
 
-    void restart() {
-        copyCat.RestartGame();
-    }
+   
 }

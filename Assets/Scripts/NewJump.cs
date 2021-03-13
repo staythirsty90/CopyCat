@@ -38,7 +38,7 @@ public class NewJump : MonoBehaviour, IJump, IOnGameOver, IOnUpdate {
             startedJump = true;
             CopyCat.Updater.AddToUpdate(this);
         }
-        copyCat.NotifyListeners(typeof(IOnJump));
+        copyCat.eventManager.NotifyListeners_OnPlayerJump();
         verticalSpeed = jumpSpeed;
         previousY = thisTransform.position.y;
     }
@@ -47,7 +47,7 @@ public class NewJump : MonoBehaviour, IJump, IOnGameOver, IOnUpdate {
         RemoveThisFromUpdater = true;
         pos.y = floorLimit;
         thisTransform.position = pos;
-        copyCat.NotifyListeners(typeof(IOnHitGround));
+        copyCat.eventManager.NotifyListeners_OnPlayerHitGround();
     }
 
     private void Jump() {
@@ -64,14 +64,14 @@ public class NewJump : MonoBehaviour, IJump, IOnGameOver, IOnUpdate {
             thisTransform.position = pos;
         }
         if (thisTransform.position.y - previousY <= 0.01f && !startedFalling) {
-            copyCat.NotifyListeners(typeof(IOnFall));
+            copyCat.eventManager.NotifyListeners_OnFall();
             startedFalling = true;
         }
         if (thisTransform.position.y < previousY) {
-            copyCat.NotifyListeners(typeof(IOnFalling));
+            copyCat.eventManager.NotifyListeners_OnFalling();
         }
         else {
-            copyCat.NotifyListeners(typeof(IOnJumping));
+            copyCat.eventManager.NotifyListeners_OnJumping();
         }
         verticalSpeed -= fallingSpeed * Time.smoothDeltaTime;
         if (verticalSpeed < maximumFallRate) {

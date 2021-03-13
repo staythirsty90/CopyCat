@@ -14,7 +14,7 @@ public class MoveObject : MonoBehaviour, IOnGameOver, IOnGamePlaying, IOnUpdate 
     }
 
     public void OnGamePlaying() {
-        CopyCat.Updater.AddToUpdate(this);
+        CopyCat.Updater.AddToUpdate(this);  
     }
 
     public void OnGameOver() {
