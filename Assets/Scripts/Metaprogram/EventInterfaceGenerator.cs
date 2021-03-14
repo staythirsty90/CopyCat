@@ -45,7 +45,7 @@ public class EventInterfaceGenerator : MonoBehaviour {
         string body = string.Empty;
         string awake = string.Empty;
         string header = string.Empty;
-        header += "// ******* GENERATED FILE. DO NOT MODIFY *******;\n";
+        header += "// ******* GENERATED FILE. DO NOT MODIFY *******\n //******* SEE EventInterfaceGenerator.cs *******";
         header += "using UnityEngine;\n";
         header += "using System.Collections.Generic;\n";
 
