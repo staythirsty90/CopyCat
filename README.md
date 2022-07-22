@@ -1,7 +1,5 @@
 # CopyCat
-A clone of Flappy Bird created with Unity
-
-## Made with Unity, Photoshop, and Google Firebase*
+A clone of Flappy Bird created with Unity, Photoshop, and Google Firebase*
 
 ## Optimizations
 
