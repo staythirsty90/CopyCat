@@ -58,7 +58,7 @@ public class NewJump : MonoBehaviour, IJump, IOnGameOver, IOnUpdate {
         }
         pos.y += thisTransform.position.y;
         thisTransform.position = pos;
-
+        startedFalling = false;
         if (thisTransform.position.y > CeilingLimit) {
             pos.y = CeilingLimit;
             thisTransform.position = pos;

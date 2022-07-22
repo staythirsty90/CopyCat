@@ -1639,7 +1639,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 2.34
+  m_Radius: 1.92
 --- !u!114 &595333429
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2429,10 +2429,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   canJumpDelay: 0.5
   jumpTime: 0.3333
-  rotateThreshold: 0.2
+  rotateThreshold: 0.1
   fallAngle: -90
-  jumpAngle: 15
-  downRotationSpeed: 0.6
+  jumpAngle: 30
+  downRotationSpeed: 0.3
 --- !u!114 &1049732448
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2627,7 +2627,7 @@ ParticleSystem:
   m_GameObject: {fileID: 1082940874}
   serializedVersion: 6
   lengthInSec: 2
-  simulationSpeed: 10
+  simulationSpeed: 5
   stopAction: 0
   cullingMode: 3
   ringBufferMode: 0
@@ -2691,7 +2691,7 @@ ParticleSystem:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-  moveWithTransform: 1
+  moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
   randomSeed: 1914266280
@@ -3192,7 +3192,7 @@ ParticleSystem:
     gravityModifier:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.03
+      scalar: 0
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -3332,7 +3332,7 @@ ParticleSystem:
     sphericalDirectionAmount: 0
     randomPositionAmount: 0
     radius:
-      value: 3.1
+      value: 0.82
       mode: 0
       spread: 0
       speed:
@@ -3390,7 +3390,7 @@ ParticleSystem:
           m_RotationOrder: 4
     arc:
       value: 360
-      mode: 0
+      mode: 3
       spread: 0
       speed:
         serializedVersion: 2
@@ -3451,7 +3451,7 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 7
+      scalar: 16
       minScalar: 10
       maxCurve:
         serializedVersion: 2
@@ -4083,7 +4083,7 @@ ParticleSystem:
     x:
       serializedVersion: 2
       minMaxState: 0
-      scalar: -1
+      scalar: 0
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -4560,7 +4560,7 @@ ParticleSystem:
     radial:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0
+      scalar: 0.55
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -4670,7 +4670,7 @@ ParticleSystem:
     m_Curve:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0
+      scalar: 0.3
       minScalar: 0
       maxCurve:
         serializedVersion: 2

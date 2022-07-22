@@ -7,10 +7,10 @@ public class Updater {
     readonly List<IOnUpdate> list_updates_to_remove = new List<IOnUpdate>(20);
     readonly List<IOnUpdate> list_updates_to_queue = new List<IOnUpdate>(20);
 
-    bool isUpdating = false;
+    bool _isUpdating = false;
     public void Update() {
         //Debug.Log(hash_updates.Count);
-        isUpdating = true;
+        _isUpdating = true;
         foreach (var updater in hash_updates) {
             updater.TimeSinceUpdating += Time.smoothDeltaTime;
             if (updater.RemoveThisFromUpdater) {
@@ -20,7 +20,7 @@ public class Updater {
                 updater.OnUpdate();
             }
         }
-        isUpdating = false;
+        _isUpdating = false;
 
         foreach(var update in list_updates_to_queue) {
             AddToUpdate(update);
@@ -39,7 +39,7 @@ public class Updater {
 
     public void AddToUpdate(IOnUpdate update) {
         if (!hash_updates.Contains(update)) {
-            if (isUpdating) {
+            if (_isUpdating) {
                 Debug.LogWarning($"Atempting to modify updater collection! {update}");
                 list_updates_to_queue.Add(update);
                 return;

@@ -1,4 +1,5 @@
-// ******* GENERATED FILE. DO NOT MODIFY *******;
+// ******* GENERATED FILE. DO NOT MODIFY *******
+//******* SEE EventInterfaceGenerator.cs *******
 using UnityEngine;
 using System.Collections.Generic;
 public class EventManager : MonoBehaviour {

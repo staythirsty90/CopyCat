@@ -18,7 +18,7 @@ public class SoundManager : MonoBehaviour, IOnMedalAwarded {
 
     public void OnValueChanged(float value) {
         PlayerPrefs.SetFloat("soundvolume", value / audioSlider.maxValue);
-        thisAudioSource.volume = value;
+        thisAudioSource.volume = Mathf.Log10(value) * 20;
         volumeText.text = GetVolumeText(value);
     }
 

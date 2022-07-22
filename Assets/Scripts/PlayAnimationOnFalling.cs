@@ -11,11 +11,17 @@ public class PlayAnimationOnFalling : MonoBehaviour, IOnGameRestart, IOnPlayerJu
 
     public void OnPlayerJump() {
         thisAnimator.SetBool(deadHash, false);
-        thisAnimator.speed = 3f;
+        thisAnimator.speed = 2f;
+        thisAnimator.Play("Base Layer.fan", 0);
+    }
+
+    void fall() {
+        thisAnimator.SetBool(deadHash, true);
     }
 
     public void OnFall() {
         thisAnimator.SetBool(deadHash, true);
+        //Debug.Log("On Fall");
     }
 
     public void OnGameRestart() {
