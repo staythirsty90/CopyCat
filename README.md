@@ -1,6 +1,8 @@
 # CopyCat
 A clone of Flappy Bird created with Unity, Photoshop, and Google Firebase*
 
+The world can change colors after restarting to look similar to those Super Mario stages that are set at night
+
 ## Optimizations
 
 Sprites are batched together to reduce draw calls. The Flappy Bird (Cat) doesn't actually move forward. Instead the world, such as the pipes, move to the left and are recycled when off screen. So if you're REALLY good at the game you never have to worry about floating point precision loss :)
