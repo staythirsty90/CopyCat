@@ -1,7 +1,7 @@
 # CopyCat
 A clone of Flappy Bird created with Unity, Photoshop, and Google Firebase*
 
-![alt tag](https://i.imgur.com/er6xFbZ.png) ![alt tag](https://i.imgur.com/u15oyO1.png)
+![alt tag](https://i.imgur.com/er6xFbZm.png) ![alt tag](https://i.imgur.com/u15oyO1m.png)
 
 The world can change colors after restarting to look similar to those Super Mario stages that are set at night
 
