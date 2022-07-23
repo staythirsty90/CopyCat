@@ -1,7 +1,7 @@
 # CopyCat
 A clone of Flappy Bird created with Unity, Photoshop, and Google Firebase*
 
-Download it on ![Google Play](https://play.google.com/store/apps/details?id=com.SunsetWorkshop.CopyCat)
+Download it on [Google Play](https://play.google.com/store/apps/details?id=com.SunsetWorkshop.CopyCat)
 
 ![alt tag](https://i.imgur.com/er6xFbZm.png) ![alt tag](https://i.imgur.com/u15oyO1m.png)
 
