@@ -1,110 +1,151 @@
 ﻿#if UNITY_EDITOR
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor.Compilation;
-using System.Reflection;
 using UnityEditor;
 using System.IO;
+using System.Text;
 
 [ExecuteInEditMode]
 public class EventInterfaceGenerator : MonoBehaviour {
-    static HashSet<System.Type> generated_interfaces = new HashSet<System.Type>();
+    
+    [SerializeField] bool ForceGeneration = false;
+
+    const string GeneratedName      = "EventManager";
+    readonly string OutputFilePath  = $"Assets/Scripts/{GeneratedName}.cs";
+    
+    static readonly HashSet<System.Type> GeneratedInterfaces = new HashSet<System.Type>();
     static int count = 0;
-    private void OnEnable() {
-        CompilationPipeline.compilationFinished -= CompilationPipeline_compilationFinished;
+
+    void Update() {
+        if(ForceGeneration) {
+            ForceGeneration = false;
+            Compile();
+        }
+    }
+
+    void OnEnable() {
         CompilationPipeline.compilationFinished += CompilationPipeline_compilationFinished;
     }
 
-    private static bool ShouldIgnore(string interfaceName) {
-        return interfaceName == "IOnPaint" || interfaceName == "IOnInspectorGUI" || interfaceName == "IOnSceneGUI";
+    void OnDisable() {
+        CompilationPipeline.compilationFinished -= CompilationPipeline_compilationFinished;
     }
+
+    static bool ShouldIgnore(string interfaceName) {
+        return  interfaceName == "IOnPaint"         || 
+                interfaceName == "IOnInspectorGUI"  || 
+                interfaceName == "IOnSceneGUI";
+    }
+
 
     public void Compile() {
         foreach (var assembly in System.AppDomain.CurrentDomain.GetAssemblies()) {
             var types = assembly.GetTypes();
             foreach (var type in types) {
-                if (type.Name.StartsWith("IOn") && !ShouldIgnore(type.Name)) {
-                    if (type.IsInterface) {
-                        generated_interfaces.Add(type);
-                        //Debug.Log($"added new interface {type.Name}");
-                    }
+                if (type.IsInterface && type.Name.StartsWith("IOn") && !ShouldIgnore(type.Name)) {
+                    GeneratedInterfaces.Add(type);
                 }
             }
         }
 
-        if (generated_interfaces.Count == count) {
+        if (GeneratedInterfaces.Count == count) {
             Debug.Log("no new interfaces to add");
             return;
         }
+        else {
+            Debug.Log("adding new interfaces.");
+            count = GeneratedInterfaces.Count;
+        }
 
-        Debug.Log("adding new interfaces.");
-        count = generated_interfaces.Count;
+        var sb = new StringBuilder();
+        
+        sb.AppendLine("// ******* GENERATED FILE. DO NOT MODIFY  *******");
+        sb.AppendLine("// ******* SEE EventInterfaceGenerator.cs *******");
+        sb.AppendLine();
+        sb.AppendLine("using UnityEngine;");
+        sb.AppendLine("using System.Collections.Generic;");
+        
+        sb.AppendLine();
 
-        string file_name = "Assets/Scripts/EventManager.cs";
-        string body = string.Empty;
-        string awake = string.Empty;
-        string header = string.Empty;
-        header += "// ******* GENERATED FILE. DO NOT MODIFY *******\n//******* SEE EventInterfaceGenerator.cs *******\n";
-        header += "using UnityEngine;\n";
-        header += "using System.Collections.Generic;\n";
+        sb.AppendLine($"public class {GeneratedName} : MonoBehaviour {{");
+        sb.AppendLine("\tMonoBehaviour[] monoBehaviours;");
 
-        header += "public class EventManager : MonoBehaviour {\n";
-        header += "\tMonoBehaviour[] monoBehaviours;\n";
-        awake += "\tvoid Awake() { \n";
-        awake += "\t\tmonoBehaviours = FindObjectsOfType<MonoBehaviour>();\n";
-        awake += $"\t\tforeach(var mono in monoBehaviours){{\n";
+        // List declarations.
+        foreach(var interf in GeneratedInterfaces) {
+            // TODO: use "new()" short-hand only.
+            sb.AppendLine($"\treadonly List<MonoBehaviour> {interf}_list = new List<MonoBehaviour>();");
+        }
 
+        sb.AppendLine();
 
-        foreach (var _event in generated_interfaces) {
-            MethodInfo[] methods = _event.GetMethods();
+        // Awake method.
+        sb.AppendLine("\tvoid Awake() {");
+        sb.AppendLine("\t\tmonoBehaviours = FindObjectsOfType<MonoBehaviour>();");
+        sb.AppendLine($"\t\tforeach(var mono in monoBehaviours){{");
+
+        foreach(var interf in GeneratedInterfaces) {
+            sb.AppendLine($"\t\t\tif(mono is {interf}) {interf}_list.Add(mono);");
+        }
+        
+        sb.AppendLine("\t\t}");
+        sb.AppendLine("\t}");
+        sb.AppendLine();
+
+        // Notification methods.
+        foreach (var interf in GeneratedInterfaces) {
+            var methods = interf.GetMethods();
             if (methods == null) {
-                Debug.LogError($"couldn't find any methods for {_event.Name}!");
+                Debug.LogError($"couldn't find any methods for {interf.Name}!");
                 continue;
             }
-            body += $"\tpublic void NotifyListeners_{_event.Name.Substring(1)}";
+
             foreach (var method in methods) {
-                if (method.IsSpecialName)
+                if(method.IsSpecialName) {
                     continue;
-                ParameterInfo[] paramInfos = method.GetParameters();
-                string params_names = string.Empty;
-                string params_str = string.Empty;
+                }
+                
+                var paramInfos      = method.GetParameters();
+                var params_names    = string.Empty;
+                var params_str      = string.Empty;
+
                 if (paramInfos.Length > 0) {
                     foreach (var param in paramInfos) {
                         params_str += $"{param.ParameterType} {param.Name},";
                         params_names += $"{param.Name},";
                     }
-                    params_str = params_str.Substring(0, params_str.Length - 1); // remove last comma ","
+                    params_str   = params_str.Substring(0, params_str.Length - 1); // remove last comma ","
                     params_names = params_names.Substring(0, params_names.Length - 1); // remove last comma ","
                 }
-                body += $"({params_str}) {{\n";
-                body += $"\t\tforeach (var listener in {_event}_list){{\n";
-                body += $"\t\t\t(({_event})listener).{method.Name}({params_names});\n";
-                body += "\t\t}\n";
-                body += "\t}\n";
-
-                header += $"\tList<MonoBehaviour> {_event}_list = new List<MonoBehaviour>();\n";
-                awake += $"\t\t\tif(mono is {_event}) {_event}_list.Add(mono);\n";
+    
+                sb.Append($"\tpublic void NotifyListeners_{interf.Name.Substring(1)}");
+                sb.AppendLine($"({params_str}) {{");
+                sb.AppendLine($"\t\tforeach (var listener in {interf}_list){{");
+                sb.AppendLine($"\t\t\t(({interf})listener).{method.Name}({params_names});");
+                sb.AppendLine("\t\t}");
+                sb.AppendLine("\t}");
+                sb.AppendLine();
             }
         }
-        body += "}\n";
-        awake += "\t\t}\n";
-        awake += "\t}\n";
 
-        body += "// ******* END OF GENERATED FILE. ******* ";
+        sb.AppendLine("}");
+        sb.AppendLine("// ******* END OF GENERATED FILE. ******* ");
 
-        if (File.Exists(file_name)) {
-            if (File.ReadAllText(file_name) == header + awake + body) {
-                Debug.Log("no new events to add.");
+        var generatedCode = sb.ToString();
+
+        if (File.Exists(OutputFilePath)) {
+            var existingCode = File.ReadAllText(OutputFilePath);
+            if (existingCode == generatedCode) {
+                Debug.Log("EventManager is up to date.");
                 return;
             }
         }
         
-        File.WriteAllText(file_name, header + awake + body);
-        AssetDatabase.ImportAsset(file_name);
+        File.WriteAllText(OutputFilePath, generatedCode);
+        AssetDatabase.ImportAsset(OutputFilePath);
     }
+    
     public void CompilationPipeline_compilationFinished(object obj) {
-        //Debug.Log("****Ello!******");
         Compile();
     }
 }
