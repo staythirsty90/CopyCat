@@ -16,15 +16,15 @@ public class EventInterfaceGenerator : MonoBehaviour {
         CompilationPipeline.compilationFinished += CompilationPipeline_compilationFinished;
     }
 
-    private static bool Ignores(string input) {
-        return input == "IOnPaint" || input == "IOnInspectorGUI" || input == "IOnSceneGUI";
+    private static bool ShouldIgnore(string interfaceName) {
+        return interfaceName == "IOnPaint" || interfaceName == "IOnInspectorGUI" || interfaceName == "IOnSceneGUI";
     }
 
     public void Compile() {
         foreach (var assembly in System.AppDomain.CurrentDomain.GetAssemblies()) {
             var types = assembly.GetTypes();
             foreach (var type in types) {
-                if (type.Name.StartsWith("IOn") && !Ignores(type.Name)) {
+                if (type.Name.StartsWith("IOn") && !ShouldIgnore(type.Name)) {
                     if (type.IsInterface) {
                         generated_interfaces.Add(type);
                         //Debug.Log($"added new interface {type.Name}");
