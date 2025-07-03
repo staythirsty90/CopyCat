@@ -6,9 +6,13 @@ using UnityEditor;
 using System.IO;
 using System.Text;
 
+/// <summary>
+/// Generates an EventManager class that aggregates and calls interfaces starting with "IOn", excluding some Unity specific ones.
+/// </summary>
 [ExecuteInEditMode]
 public class EventInterfaceGenerator : MonoBehaviour {
-    
+
+    [Tooltip("Generate the file regardless if it is already up to date.")]
     [SerializeField] bool ForceGeneration = false;
 
     const string GeneratedName      = "EventManager";
@@ -34,14 +38,21 @@ public class EventInterfaceGenerator : MonoBehaviour {
         GenerateFile();
     }
 
+    /// <summary>
+    /// Checks the interfaceName to see if it should be ignored.
+    /// </summary>
+    /// <param name="interfaceName">The name of the Interface to check.</param>
+    /// <returns>Whether or not to ignore this interface.</returns>
     static bool ShouldIgnore(string interfaceName) {
         return  interfaceName == "IOnPaint"         || 
                 interfaceName == "IOnInspectorGUI"  || 
                 interfaceName == "IOnSceneGUI";
     }
 
-
-    public void GenerateFile() {
+    /// <summary>
+    /// Generates the EventManager file.
+    /// </summary>
+    void GenerateFile() {
         foreach (var assembly in System.AppDomain.CurrentDomain.GetAssemblies()) {
             var types = assembly.GetTypes();
             foreach (var type in types) {
