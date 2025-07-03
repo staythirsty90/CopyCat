@@ -18,16 +18,20 @@ public class EventInterfaceGenerator : MonoBehaviour {
 
     void Update() {
         if(ForceGeneration) {
-            Compile();
+            GenerateFile();
         }
     }
 
     void OnEnable() {
-        CompilationPipeline.compilationFinished += CompilationPipeline_compilationFinished;
+        CompilationPipeline.compilationFinished += OnCompilationFinished;
     }
 
     void OnDisable() {
-        CompilationPipeline.compilationFinished -= CompilationPipeline_compilationFinished;
+        CompilationPipeline.compilationFinished -= OnCompilationFinished;
+    }
+
+    public void OnCompilationFinished(object obj) {
+        GenerateFile();
     }
 
     static bool ShouldIgnore(string interfaceName) {
@@ -37,7 +41,7 @@ public class EventInterfaceGenerator : MonoBehaviour {
     }
 
 
-    public void Compile() {
+    public void GenerateFile() {
         foreach (var assembly in System.AppDomain.CurrentDomain.GetAssemblies()) {
             var types = assembly.GetTypes();
             foreach (var type in types) {
@@ -137,10 +141,6 @@ public class EventInterfaceGenerator : MonoBehaviour {
         Debug.Log("EventManager has been updated.");
         
         ForceGeneration = false;
-    }
-    
-    public void CompilationPipeline_compilationFinished(object obj) {
-        Compile();
     }
 }
 
