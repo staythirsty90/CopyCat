@@ -15,11 +15,9 @@ public class EventInterfaceGenerator : MonoBehaviour {
     readonly string OutputFilePath  = $"Assets/Scripts/{GeneratedName}.cs";
     
     static readonly HashSet<System.Type> GeneratedInterfaces = new HashSet<System.Type>();
-    static int count = 0;
 
     void Update() {
         if(ForceGeneration) {
-            ForceGeneration = false;
             Compile();
         }
     }
@@ -49,15 +47,6 @@ public class EventInterfaceGenerator : MonoBehaviour {
             }
         }
 
-        if (GeneratedInterfaces.Count == count) {
-            Debug.Log("no new interfaces to add");
-            return;
-        }
-        else {
-            Debug.Log("adding new interfaces.");
-            count = GeneratedInterfaces.Count;
-        }
-
         var sb = new StringBuilder();
         
         sb.AppendLine("// ******* GENERATED FILE. DO NOT MODIFY  *******");
@@ -74,7 +63,7 @@ public class EventInterfaceGenerator : MonoBehaviour {
         // List declarations.
         foreach(var interf in GeneratedInterfaces) {
             // TODO: use "new()" short-hand only.
-            sb.AppendLine($"\treadonly List<MonoBehaviour> {interf}_list = new List<MonoBehaviour>();");
+            sb.AppendLine($"\tList<MonoBehaviour> {interf}_list = new List<MonoBehaviour>();");
         }
 
         sb.AppendLine();
@@ -134,15 +123,20 @@ public class EventInterfaceGenerator : MonoBehaviour {
         var generatedCode = sb.ToString();
 
         if (File.Exists(OutputFilePath)) {
-            var existingCode = File.ReadAllText(OutputFilePath);
-            if (existingCode == generatedCode) {
-                Debug.Log("EventManager is up to date.");
-                return;
+            if(!ForceGeneration) {
+                var existingCode = File.ReadAllText(OutputFilePath);
+                if (existingCode == generatedCode) {
+                    Debug.Log("EventManager is up to date.");
+                    return;
+                }
             }
         }
         
         File.WriteAllText(OutputFilePath, generatedCode);
         AssetDatabase.ImportAsset(OutputFilePath);
+        Debug.Log("EventManager has been updated.");
+        
+        ForceGeneration = false;
     }
     
     public void CompilationPipeline_compilationFinished(object obj) {

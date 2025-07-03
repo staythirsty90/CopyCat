@@ -6,25 +6,25 @@ using System.Collections.Generic;
 
 public class EventManager : MonoBehaviour {
 	MonoBehaviour[] monoBehaviours;
-	readonly List<MonoBehaviour> IOnFall_list = new List<MonoBehaviour>();
-	readonly List<MonoBehaviour> IOnFalling_list = new List<MonoBehaviour>();
-	readonly List<MonoBehaviour> IOnGameBegin_list = new List<MonoBehaviour>();
-	readonly List<MonoBehaviour> IOnGameInitialized_list = new List<MonoBehaviour>();
-	readonly List<MonoBehaviour> IOnGameOver_list = new List<MonoBehaviour>();
-	readonly List<MonoBehaviour> IOnGamePlaying_list = new List<MonoBehaviour>();
-	readonly List<MonoBehaviour> IOnGameRestart_list = new List<MonoBehaviour>();
-	readonly List<MonoBehaviour> IOnGameRestarted_list = new List<MonoBehaviour>();
-	readonly List<MonoBehaviour> IOnJumping_list = new List<MonoBehaviour>();
-	readonly List<MonoBehaviour> IOnMedalAwarded_list = new List<MonoBehaviour>();
-	readonly List<MonoBehaviour> IOnNewHighScore_list = new List<MonoBehaviour>();
-	readonly List<MonoBehaviour> IOnPlayerHitGround_list = new List<MonoBehaviour>();
-	readonly List<MonoBehaviour> IOnPlayerJump_list = new List<MonoBehaviour>();
-	readonly List<MonoBehaviour> IOnPlayerKilled_list = new List<MonoBehaviour>();
-	readonly List<MonoBehaviour> IOnScorePoint_list = new List<MonoBehaviour>();
-	readonly List<MonoBehaviour> IOnSettingsClose_list = new List<MonoBehaviour>();
-	readonly List<MonoBehaviour> IOnSettingsOpen_list = new List<MonoBehaviour>();
-	readonly List<MonoBehaviour> IOnUpdate_list = new List<MonoBehaviour>();
-	readonly List<MonoBehaviour> IOnWorldChanged_list = new List<MonoBehaviour>();
+	List<MonoBehaviour> IOnFall_list = new List<MonoBehaviour>();
+	List<MonoBehaviour> IOnFalling_list = new List<MonoBehaviour>();
+	List<MonoBehaviour> IOnGameBegin_list = new List<MonoBehaviour>();
+	List<MonoBehaviour> IOnGameInitialized_list = new List<MonoBehaviour>();
+	List<MonoBehaviour> IOnGameOver_list = new List<MonoBehaviour>();
+	List<MonoBehaviour> IOnGamePlaying_list = new List<MonoBehaviour>();
+	List<MonoBehaviour> IOnGameRestart_list = new List<MonoBehaviour>();
+	List<MonoBehaviour> IOnGameRestarted_list = new List<MonoBehaviour>();
+	List<MonoBehaviour> IOnJumping_list = new List<MonoBehaviour>();
+	List<MonoBehaviour> IOnMedalAwarded_list = new List<MonoBehaviour>();
+	List<MonoBehaviour> IOnNewHighScore_list = new List<MonoBehaviour>();
+	List<MonoBehaviour> IOnPlayerHitGround_list = new List<MonoBehaviour>();
+	List<MonoBehaviour> IOnPlayerJump_list = new List<MonoBehaviour>();
+	List<MonoBehaviour> IOnPlayerKilled_list = new List<MonoBehaviour>();
+	List<MonoBehaviour> IOnScorePoint_list = new List<MonoBehaviour>();
+	List<MonoBehaviour> IOnSettingsClose_list = new List<MonoBehaviour>();
+	List<MonoBehaviour> IOnSettingsOpen_list = new List<MonoBehaviour>();
+	List<MonoBehaviour> IOnUpdate_list = new List<MonoBehaviour>();
+	List<MonoBehaviour> IOnWorldChanged_list = new List<MonoBehaviour>();
 
 	void Awake() {
 		monoBehaviours = FindObjectsOfType<MonoBehaviour>();
