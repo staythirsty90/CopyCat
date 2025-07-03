@@ -2,22 +2,19 @@
 using UnityEngine.UI;
 
 public class SoundManager : MonoBehaviour, IOnMedalAwarded {
-    private static AudioSource thisAudioSource;
-    [SerializeField]
-    private AudioClip medalAward = null;
-    [SerializeField]
-    private Slider audioSlider = null;
-    [SerializeField]
-    private Text volumeText = null;
+    static AudioSource thisAudioSource;
+    [SerializeField] AudioClip medalAward = null;
+    [SerializeField] Slider volumeSlider = null;
+    [SerializeField] Text volumeText = null;
 
     void Awake () {
         thisAudioSource = GetComponent<AudioSource> ();
-        float volume = PlayerPrefs.GetFloat("soundvolume", audioSlider.maxValue);
-        audioSlider.value = volume * audioSlider.maxValue;
+        float volume = PlayerPrefs.GetFloat("soundvolume", volumeSlider.maxValue);
+        volumeSlider.value = volume * volumeSlider.maxValue;
     }
 
     public void OnValueChanged(float value) {
-        PlayerPrefs.SetFloat("soundvolume", value / audioSlider.maxValue);
+        PlayerPrefs.SetFloat("soundvolume", value / volumeSlider.maxValue);
         thisAudioSource.volume = Mathf.Log10(value) * 20;
         volumeText.text = GetVolumeText(value);
     }
