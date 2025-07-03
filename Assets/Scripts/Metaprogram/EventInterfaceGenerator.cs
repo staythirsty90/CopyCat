@@ -14,7 +14,7 @@ public class EventInterfaceGenerator : MonoBehaviour {
     const string GeneratedName      = "EventManager";
     readonly string OutputFilePath  = $"Assets/Scripts/{GeneratedName}.cs";
     
-    static readonly HashSet<System.Type> GeneratedInterfaces = new HashSet<System.Type>();
+    readonly HashSet<System.Type> GeneratedInterfaces = new HashSet<System.Type>();
 
     void Update() {
         if(ForceGeneration) {
