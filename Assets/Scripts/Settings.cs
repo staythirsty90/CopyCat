@@ -13,10 +13,10 @@ public class Settings : MonoBehaviour {
         bool isEnabled = gameObject.activeInHierarchy;
 
         if (isEnabled) {
-            copyCat.eventManager.NotifyListeners_OnSettingsClose();
+            copyCat.EventManager.NotifyListeners_OnSettingsClose();
         }
         else {
-            copyCat.eventManager.NotifyListeners_OnSettingsOpen();
+            copyCat.EventManager.NotifyListeners_OnSettingsOpen();
         }
 
         gameObject.SetActive(!isEnabled);

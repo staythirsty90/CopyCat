@@ -40,7 +40,7 @@ public class ScoreManager : MonoBehaviour, IOnScorePoint, IOnGameOver, IOnGameRe
 
     public void OnGameRestart() {
         Score = 0;
-        copyCat.eventManager.NotifyListeners_OnScorePoint(Score);
+        copyCat.EventManager.NotifyListeners_OnScorePoint(Score);
         thisRectTransform.anchoredPosition = startingPosition;
         scoreText.text = Score.ToString();
         NewHighScore = false;

@@ -33,7 +33,7 @@ public class KillOnCollide : MonoBehaviour, IOnUpdate, IOnGameRestarted {
         UnityEngine.Profiling.Profiler.EndSample();
     }
     void Kill() {
-        copyCat.eventManager.NotifyListeners_OnPlayerKilled();
+        copyCat.EventManager.NotifyListeners_OnPlayerKilled();
         CopyCat.Updater.AddToUpdate(this);
     }
     public void OnUpdate() {

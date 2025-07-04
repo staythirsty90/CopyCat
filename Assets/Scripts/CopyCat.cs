@@ -6,50 +6,57 @@ public class CopyCat : MonoBehaviour, IOnGameRestarted, IOnPlayerJump, IOnPlayer
     public float beginDelay = 0.5f;
     public float initializeDelay = 0.5f;
     public int fps = 30;
-    public bool IsGameOver { get; private set; } = false;
-    public bool DidGameBegin { get; private set; } = false;
-    public bool IsGamePlaying { get; private set; } = false;
-    public bool IsGameInitialized { get; private set; } = false;
-    private float timer = 0;
-    private Transform thisTransform;
-    private Vector3 originalPosition;
-    public static Updater Updater = new Updater();
-    public EventManager eventManager;
+    public bool IsGameOver { get; private set; }
+    public bool DidGameBegin { get; private set; }
+    public bool IsGamePlaying { get; private set; }
+    public bool IsGameInitialized { get; private set; }
+    
+    float delayTimer = 0;
+    Transform thisTransform;
+    Vector3 originalPosition;
+    
+    public EventManager EventManager { get; private set; }
+    public static readonly Updater Updater = new Updater();
 
     void Awake() {
-        eventManager = FindObjectOfType<EventManager>();
         Screen.SetResolution(480, 800, true);
+
         Application.targetFrameRate = fps;
-        Screen.sleepTimeout = SleepTimeout.NeverSleep;
-        thisTransform = transform;
-        originalPosition = thisTransform.position;
+        EventManager                = FindObjectOfType<EventManager>();
+        Screen.sleepTimeout         = SleepTimeout.NeverSleep;
+        thisTransform               = transform;
+        originalPosition            = thisTransform.position;
     }
+
     public void OnPlayerJump() {
         if (IsGamePlaying) {
             return;
         }
-        eventManager.NotifyListeners_OnGamePlaying();
+        EventManager.NotifyListeners_OnGamePlaying();
         IsGamePlaying = true;
     }
 
     void Update() {
-        Updater.Update();
-
-        if (!IsGameInitialized) {
-            if (timer < initializeDelay) {
-                timer += Time.deltaTime;
-            }
-            else {
-                eventManager.NotifyListeners_OnGameInitialized();
-                IsGameInitialized = true;
-            }
-        }
-
-#if UNITY_EDITOR
+         // Score Debug helper.
+        #if UNITY_EDITOR
         if (Input.GetKey(KeyCode.Alpha1)) {
             FindObjectOfType<ScoreManager>().OnScorePoint(1);
         }
-#endif
+        #endif
+
+        Updater.Update();
+
+        if(IsGameInitialized) {
+            return;
+        }
+        
+        if (delayTimer <= initializeDelay) {
+            delayTimer += Time.deltaTime;
+            return;
+        }
+        
+        EventManager.NotifyListeners_OnGameInitialized();
+        IsGameInitialized = true;
     }
 
     public void OnPlayerHitGround() {
@@ -61,7 +68,7 @@ public class CopyCat : MonoBehaviour, IOnGameRestarted, IOnPlayerJump, IOnPlayer
     }
 
     void begin() {
-        eventManager.NotifyListeners_OnGameBegin();
+        EventManager.NotifyListeners_OnGameBegin();
         DidGameBegin = true;
     }
 
@@ -72,25 +79,27 @@ public class CopyCat : MonoBehaviour, IOnGameRestarted, IOnPlayerJump, IOnPlayer
     }
 
     public void RestartGame() {
-        eventManager.NotifyListeners_OnGameRestarted();
+        EventManager.NotifyListeners_OnGameRestarted();
     }
+
     public void EndGame() {
         if (IsGameOver) {
             return;
         }
-        eventManager.NotifyListeners_OnGameOver();
+        EventManager.NotifyListeners_OnGameOver();
         IsGameOver = true;
     }
 
     public void OnGameRestarted() {
-        eventManager.NotifyListeners_OnGameRestart();
-        IsGameOver = false;
-        timer = 0;
-        DidGameBegin = false;
-        IsGamePlaying = false;
-        thisTransform.position = originalPosition;
-        thisTransform.rotation = Quaternion.identity;
         GC.Collect();
+        EventManager.NotifyListeners_OnGameRestart();
+
+        IsGameOver              = false;
+        delayTimer                   = 0;
+        DidGameBegin            = false;
+        IsGamePlaying           = false;
+        thisTransform.position  = originalPosition;
+        thisTransform.rotation  = Quaternion.identity;
     }
 
     public void OnPlayerKilled() {

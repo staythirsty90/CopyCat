@@ -48,7 +48,7 @@ public class MedalReward : UIMonoBehaviour, IOnGameOver, IOnGameRestart {
         else {
             yield return StartCoroutine(CrossFade(myImage, myImage.color.a, 1f, null, 2f));
             moveSparkles?.Init();
-            copyCat.eventManager.NotifyListeners_OnMedalAwarded();
+            copyCat.EventManager.NotifyListeners_OnMedalAwarded();
         }
 
         yield return null;

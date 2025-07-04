@@ -23,6 +23,6 @@ public class ChangeWorldColors : MonoBehaviour, IOnGameRestart {
     }
 
     private void ChangeWorldColor(int colorIndex) {
-        copyCat.eventManager.NotifyListeners_OnWorldChanged(colorIndex);
+        copyCat.EventManager.NotifyListeners_OnWorldChanged(colorIndex);
     }
 }

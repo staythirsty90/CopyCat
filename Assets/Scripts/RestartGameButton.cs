@@ -2,18 +2,19 @@
 using UnityEngine;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(Button))]
 public class RestartGameButton : UIMonoBehaviour, IOnGameOver, IOnGameRestart {
-    [SerializeField]
-    private AudioClip restartAudio = null;
     public float fadeInTime = 0.3f;
     public float restartGameDelay = 1f;
-    [SerializeField]
-    private Image blackFadeImage = null;
     public Vector2 endPosition;
-    private Vector2 originalPosition;
-    private Button thisButton;
-    private bool didClickRestart = false;
-    private CopyCat copyCat;
+
+    [SerializeField] AudioClip restartAudio;
+    [SerializeField] Image blackFadeImage;
+
+    Vector2 originalPosition;
+    Button thisButton;
+    bool didClickRestart;
+    CopyCat copyCat;
 
     protected override void Awake() {
         base.Awake();
@@ -27,33 +28,22 @@ public class RestartGameButton : UIMonoBehaviour, IOnGameOver, IOnGameRestart {
         thisImage.enabled = false;
         didClickRestart = false;
     }
+
     public void OnGameOver() {
-        // TODO FIX IT ALL
-        // thisImage.rectTransform.anchoredPosition = endPosition;
-        // thisImage.enabled = true;
-        // thisButton.interactable = true;
-        // thisImage.color = new Color32(255, 255, 255, 255);
-        // CopyCat.OnUpdate += restartGameHandler;
         StartCoroutine(Delay());
-        //CopyCat.Updater.AddToUpdate(this);
     }
 
-
     IEnumerator Delay() {
-        float t = 0;
-
+        var t = 0f;
         while (t <= delay) {
             t += Time.deltaTime;
             yield return null;
         }
+
         thisImage.rectTransform.anchoredPosition = endPosition;
         StartCoroutine(This_FadeIn(thisImage, false));
     }
-
-    void restart() {
-        copyCat.RestartGame();
-    }
-
+    
     public void Restart() {
         if (!didClickRestart) {
             didClickRestart = true;
@@ -63,7 +53,7 @@ public class RestartGameButton : UIMonoBehaviour, IOnGameOver, IOnGameRestart {
     }
 
     IEnumerator RestartGame() {
-        float t = 0;
+        var t = 0f;
         blackFadeImage.rectTransform.anchoredPosition = Vector3.zero;
         yield return StartCoroutine(This_FadeOut(thisImage));
         thisImage.rectTransform.anchoredPosition = originalPosition;
@@ -75,16 +65,17 @@ public class RestartGameButton : UIMonoBehaviour, IOnGameOver, IOnGameRestart {
         StartCoroutine(This_FadeOut(blackFadeImage));
         didClickRestart = false;
     }
-    IEnumerator This_FadeIn(MaskableGraphic thisImage, bool restartAfter) {
-        yield return StartCoroutine(CrossFade(thisImage, thisImage.color.a, delay));
+
+    IEnumerator This_FadeIn(MaskableGraphic graphic, bool restartAfter) {
+        yield return StartCoroutine(CrossFade(graphic, graphic.color.a, delay));
         if (restartAfter) {
-            float t = 0;
+            var t = 0f;
             while (t < restartGameDelay) {
                 yield return null;
                 t += Time.deltaTime;
             }
-            restart();
-            yield return StartCoroutine(This_FadeOut(thisImage));
+            copyCat.RestartGame();
+            yield return StartCoroutine(This_FadeOut(graphic));
             copyCat.BeginGamePlay();
         }
         else {
@@ -93,13 +84,11 @@ public class RestartGameButton : UIMonoBehaviour, IOnGameOver, IOnGameRestart {
     }
 
     IEnumerator This_FadeOut(MaskableGraphic thisImage) {
-        float t = 0;
+        var t = 0f;
         while (t < restartGameDelay) {
             yield return null;
             t += Time.deltaTime;
         }
         yield return StartCoroutine(CrossFade(thisImage, thisImage.color.a, 0f));
     }
-
-   
 }
