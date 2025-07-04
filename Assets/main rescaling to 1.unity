@@ -2325,7 +2325,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   numberOfWorldColors: 2
   chanceToChangeWorldColors: 50
-  startingWorldColor: 0
+  startingWorldColor: 1
 --- !u!60 &1049732442
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -2463,7 +2463,6 @@ MonoBehaviour:
   beginDelay: 0
   initializeDelay: 0
   fps: 30
-  eventManager: {fileID: 0}
 --- !u!1 &1063528899
 GameObject:
   m_ObjectHideFlags: 0
@@ -2476,7 +2475,7 @@ GameObject:
   - component: {fileID: 1063528902}
   - component: {fileID: 1063528900}
   m_Layer: 0
-  m_Name: Event Manager
+  m_Name: EventManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2494,6 +2493,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1fb86d895ca9574d929f16f781400f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ForceGeneration: 0
 --- !u!4 &1063528901
 Transform:
   m_ObjectHideFlags: 0
@@ -9553,7 +9553,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   medalAward: {fileID: 8300000, guid: 31a9ee11d07f5fa46a14125c3516bf8a, type: 3}
-  audioSlider: {fileID: 1968790255}
+  volumeSlider: {fileID: 1968790255}
   volumeText: {fileID: 33073611}
 --- !u!114 &1807503221
 MonoBehaviour:
